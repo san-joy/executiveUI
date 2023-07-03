@@ -1,0 +1,21 @@
+<mat-card *ngIf="!showForm; else formTemplate">
+    <mat-card-header>
+        <div class="header-content">
+            <mat-card-title>Executive details</mat-card-title>
+            <div class="spacer"></div>
+            <button mat-icon-button color="primary" (click)="editExecutive()">
+                <mat-icon>edit</mat-icon>
+            </button>
+        </div>
+    </mat-card-header>
+    <mat-card-content>
+        <p>Name: <b>{{executive.title}} {{executive.firstName}} {{executive.lastName}}</b></p>
+        <p>System Initials: <b>{{executive.systemInitials}}</b></p>
+        <p>Executive Group: <b>{{executive.executiveGroup.name}}</b></p>
+    </mat-card-content>
+</mat-card>
+
+<ng-template #formTemplate>
+    <!-- Include the ExecutiveFormComponent for editing the executive -->
+    <app-executive-form [executive]="executive" (formSubmitted)="handleFormSubmission($event)"></app-executive-form>
+</ng-template>

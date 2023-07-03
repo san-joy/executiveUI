@@ -1,0 +1,43 @@
+<mat-card>
+    <mat-card-header>
+        <mat-card-title>
+            <h4>{{title}} an executive</h4>
+        </mat-card-title>
+    </mat-card-header>
+    <mat-card-content class="register-container">
+        <form [formGroup]="executiveForm" (ngSubmit)="onSubmit()">
+            <mat-form-field appearance="outline">
+                <mat-label>Title</mat-label>
+                <mat-select formControlName="title">
+                    <mat-option *ngFor="let title of titles" [value]="title">{{ title }}</mat-option>
+                </mat-select>
+            </mat-form-field>
+
+            <mat-form-field appearance="outline">
+                <mat-label>First Name</mat-label>
+                <input matInput formControlName="firstName" required>
+                <mat-error *ngIf="executiveForm.controls['firstName'].hasError('required')">First Name is
+                    required</mat-error>
+            </mat-form-field>
+
+            <mat-form-field appearance="outline">
+                <mat-label>Last Name</mat-label>
+                <input matInput formControlName="lastName" required>
+                <mat-error *ngIf="executiveForm.controls['lastName'].hasError('required')">Last Name is
+                    required</mat-error>
+            </mat-form-field>
+
+            <mat-form-field appearance="outline">
+                <mat-label>Executive Group</mat-label>
+                <mat-select formControlName="executiveGroup" [compareWith]="compareGroups">
+                    <mat-option *ngFor="let group of executiveGroupData" [value]="group">{{ group.name }}</mat-option>
+                </mat-select>
+                <mat-error *ngIf="executiveForm.controls['executiveGroup'].hasError('required')">Executive group is
+                    required</mat-error>
+            </mat-form-field>
+
+            <button class="submit-btn" type="submit" mat-raised-button color="primary">{{title =="Edit" ? "Update" :
+                "Submit"}}</button>
+        </form>
+    </mat-card-content>
+</mat-card>

@@ -1,0 +1,45 @@
+<ng-container *ngIf="!(executives$ | async)">
+  <div class="spinner-container">
+    <mat-progress-spinner mode="indeterminate"></mat-progress-spinner>
+  </div>
+</ng-container>
+
+<mat-card *ngIf="(executives$ | async) !== null">
+  <mat-card-header>
+    <div class="header-content">
+      <mat-card-title>List of Executives</mat-card-title>
+      <div class="spacer"></div>
+      <button mat-icon-button color="primary" (click)="createExecutive()">
+        <mat-icon>add</mat-icon>
+      </button>
+    </div>
+  </mat-card-header>
+  <mat-card-content>
+
+<table mat-table [dataSource]="executives$" [trackBy]="trackByFn" class="mat-elevation-z8">
+  <ng-container matColumnDef="id">
+    <th mat-header-cell *matHeaderCellDef> Id.</th>
+    <td mat-cell *matCellDef="let element"> {{element.id}} </td>
+  </ng-container>
+
+  <ng-container matColumnDef="name">
+    <th mat-header-cell *matHeaderCellDef> Name </th>
+    <td mat-cell *matCellDef="let element"> {{element.title}} {{element.firstName}} {{element.lastName}} </td>
+  </ng-container>
+
+  <ng-container matColumnDef="sysInitials">
+    <th mat-header-cell *matHeaderCellDef> Sys Initials </th>
+    <td mat-cell *matCellDef="let element"> {{element.systemInitials}} </td>
+  </ng-container>
+
+  <ng-container matColumnDef="group">
+    <th mat-header-cell *matHeaderCellDef> Group </th>
+    <td mat-cell *matCellDef="let element"> {{element.executiveGroup.name}} </td>
+  </ng-container>
+
+  <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+  <tr mat-row *matRowDef="let row; columns: displayedColumns;" (click)="viewExecutiveDetails(row)"></tr>
+</table>
+</mat-card-content>
+
+</mat-card>
