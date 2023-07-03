@@ -25,15 +25,17 @@ export class ExecutiveFormComponent implements OnInit, OnDestroy {
     private dialogRef: MatDialogRef<ExecutiveFormComponent>,
     private formBuilder: FormBuilder,
     private executiveGroupService: ExecutiveGroupService) {
-      this.executiveForm = this.formBuilder.group({
-        title: [null],
-        firstName: [null, Validators.required],
-        lastName: [null, Validators.required],
-        executiveGroup: [null, Validators.required],
-      });
-    }
+    // Initialize the executive form with form controls and validators
+    this.executiveForm = this.formBuilder.group({
+      title: [null],
+      firstName: [null, Validators.required],
+      lastName: [null, Validators.required],
+      executiveGroup: [null, Validators.required],
+    });
+  }
 
   ngOnInit(): void {
+    // Subscribe to the executive group service to fetch the executive group data
     this.executiveGroupsSubscription = this.executiveGroupService.getExecutiveGroups().subscribe({
       next: data => {
         this.executiveGroupData = data;
@@ -44,7 +46,9 @@ export class ExecutiveFormComponent implements OnInit, OnDestroy {
       complete: () => { }
     });
 
-    if(Object.keys(this.executive).length !== 0) {
+    if (Object.keys(this.executive).length !== 0) {
+      // If executive data is provided, set the form title and set the form values
+      this.title = 'Edit';
       this.title = 'Edit';
       this.executiveForm.patchValue({
         title: this.executive.title,
@@ -58,6 +62,7 @@ export class ExecutiveFormComponent implements OnInit, OnDestroy {
   }
 
   compareGroups(group1: executiveGroupData, group2: executiveGroupData): boolean {
+    // Compare function to determine if two executive groups are equal
     return group1 && group2 ? group1.id === group2.id : group1 === group2;
   }
 
@@ -69,10 +74,11 @@ export class ExecutiveFormComponent implements OnInit, OnDestroy {
       const systemInitials = (firstName.charAt(0) + lastName.charAt(0)).toUpperCase();
       // Include the generated system initials in the form value
       this.executiveForm.value.systemInitials = systemInitials;
-      if(this.title === 'Edit') {
+      if (this.title === 'Edit') {
+        // If the form is in 'Edit' mode, emit the form value with additional properties
         this.executiveForm.value.version = this.executive.version;
         this.executiveForm.value.id = this.executive.id;
-        this.formSubmitted.emit( this.executiveForm.value);
+        this.formSubmitted.emit(this.executiveForm.value);
       }
 
       this.dialogRef.close(this.executiveForm.value);
@@ -80,6 +86,7 @@ export class ExecutiveFormComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
+    // Unsubscribe from the executive groups subscription to avoid memory leaks
     this.executiveGroupsSubscription.unsubscribe();
   }
 }
